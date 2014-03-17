@@ -19,8 +19,13 @@
           (t matrix))))
 
 (defun reduce-rows (matrix)
-  "Reduce all elements in a row by the lowest element in the row."
+  "Reduce all elements in each row by the lowest element in the row."
   (mapcar #'(lambda (each-row)
 	      (let* ((min-of-row (apply #'min each-row)))
 		(mapcar #'(lambda (each-element)
 			    (- each-element min-of-row)) each-row))) matrix))
+
+(defun reduce-columns (matrix)
+  "Reduce all elements in each column by the lowest element in the column."
+  (let* ((transpose (apply #'mapcar #'list matrix)))
+    (apply #'mapcar #'list (reduce-rows transpose))))
