@@ -17,3 +17,10 @@
            (append matrix (make-list (abs pad-num) :initial-element
                                      (make-list (length (car matrix)) :initial-element 0))))
           (t matrix))))
+
+(defun reduce-rows (matrix)
+  "Reduce all elements in a row by the lowest element in the row."
+  (mapcar #'(lambda (each-row)
+	      (let* ((min-of-row (apply #'min each-row)))
+		(mapcar #'(lambda (each-element)
+			    (- each-element min-of-row)) each-row))) matrix))
