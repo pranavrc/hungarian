@@ -5,6 +5,10 @@
   "Given a regular matrix, return its order as a cons (r c)."
   (list (length matrix) (length (car matrix))))
 
+(defun max-in-matrix (matrix)
+  "Find the largest element in the matrix."
+  (apply #'max (mapcar #'(lambda (list) (apply #'max list)) matrix)))
+
 (defun pad-matrix (matrix)
   "Pad non-square matrices with zeros to make them square."
   (let* ((pad-num (- (first (order-of-matrix matrix))
