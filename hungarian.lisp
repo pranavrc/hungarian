@@ -12,14 +12,15 @@
 (defun pad-matrix (matrix)
   "Pad non-square matrices with zeros to make them square."
   (let* ((pad-num (- (first (order-of-matrix matrix))
-                     (second (order-of-matrix matrix)))))
+                     (second (order-of-matrix matrix))))
+         (max-element (max-in-matrix matrix)))
     (cond ((= pad-num 0) matrix)
           ((> pad-num 0)
            (mapcar #'(lambda (list)
-                       (append list (make-list pad-num :initial-element 0))) matrix))
+                       (append list (make-list pad-num :initial-element max-element))) matrix))
           ((< pad-num 0)
            (append matrix (make-list (abs pad-num) :initial-element
-                                     (make-list (length (car matrix)) :initial-element 0))))
+                                     (make-list (length (car matrix)) :initial-element max-element))))
           (t matrix))))
 
 (defun reduce-rows (matrix)
