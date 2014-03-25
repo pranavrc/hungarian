@@ -34,3 +34,20 @@
   "Reduce all elements in each column by the lowest element in the column."
   (let* ((transpose (apply #'mapcar #'list matrix)))
     (apply #'mapcar #'list (reduce-rows transpose))))
+
+(defun find-zeros (matrix)
+  "Return positions of all zeros in matrix."
+  (let* ((zeros '())
+         (row-count 0))
+    (mapcar #'(lambda (each-row)
+                (let* ((column-count 0))
+                  (mapcar #'(lambda (each-element)
+                              (cond
+                                ((eql each-element 0)
+                                 (setq zeros (nconc zeros (list (cons row-count column-count))))
+                                 (incf column-count))
+                                (t (incf column-count))))
+                          each-row)
+                  (incf row-count)))
+            matrix)
+    zeros))
