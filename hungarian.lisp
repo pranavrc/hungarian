@@ -3,7 +3,7 @@
 
 (defun order-of-matrix (matrix)
   "Given a regular matrix, return its order as a cons (r c)."
-  (list (length matrix) (length (car matrix))))
+  (cons (length matrix) (length (car matrix))))
 
 (defun max-in-matrix (matrix)
   "Find the largest element in the matrix."
