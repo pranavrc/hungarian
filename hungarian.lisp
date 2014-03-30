@@ -39,12 +39,14 @@
   "Return positions of all zeros in matrix."
   (let* ((zeros '())
          (row-count 0)
+         (total-zeros 0)
          (zero-count (make-array (list 2 (car (order-of-matrix matrix))) :initial-element 0)))
     (mapcar #'(lambda (each-row)
                 (let* ((column-count 0))
                   (mapcar #'(lambda (each-element)
                               (cond
                                 ((eql each-element 0)
+                                 (incf total-zeros)
                                  (incf (aref zero-count 0 row-count))
                                  (incf (aref zero-count 1 column-count))
                                  (setq zeros (nconc zeros (list (cons row-count column-count))))
@@ -53,4 +55,4 @@
                           each-row)
                   (incf row-count)))
             matrix)
-    (list :count zero-count :zeros zeros)))
+    (list :count zero-count :zeros zeros :total-zeros total-zeros)))
