@@ -56,3 +56,28 @@
                   (incf row-count)))
             matrix)
     (list :count zero-count :zeros zeros :total-zeros total-zeros)))
+
+(defun optimal-cover (zero-count total-zeros linear-length row-count)
+  "Find the optimal way to cover all zeros in the reduced matrix."
+  (flet ((max-cover (omit-indices)
+           (let ((end (1- linear-length))
+                 (running-max 0)
+                 (max-index nil))
+             (loop for i from 0 to end do
+                  (let ((current (row-major-aref zero-count i)))
+                    (multiple-value-setq (running-max max-index)
+                          (if (and (> current running-max) (not (member i omit-indices)))
+                              (values current i)
+                              (values running-max max-index)))))
+             (values running-max max-index))))
+    (let ((running-zero-cover 0)
+          (optimal-cover-set nil)
+          (omit-indices nil))
+      (loop for cover-count from 0 while (< running-zero-cover total-zeros) do
+           (multiple-value-bind (zeros-covered position) (max-cover omit-indices)
+             (incf running-zero-cover zeros-covered)
+             (setq omit-indices (append omit-indices (list position)))
+             (setq optimal-cover-set (append optimal-cover-set
+                                             (list (cons (ceiling (mod position row-count))
+                                                         (- position (floor (mod position row-count)))))))))
+      optimal-cover-set)))
