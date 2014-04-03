@@ -78,6 +78,17 @@
              (incf running-zero-cover zeros-covered)
              (setq omit-indices (append omit-indices (list position)))
              (setq optimal-cover-set (append optimal-cover-set
-                                             (list (cons (ceiling (mod position row-count))
-                                                         (- position (floor (mod position row-count)))))))))
+                                             (let ((row-col (floor (/ position row-count))))
+                                               (list (cons row-col (- position (* row-col row-count)))))))))
       optimal-cover-set)))
+
+(defun initial-solution (matrix)
+  "Get an initial solution with zeros covered."
+  (let* ((padded (pad-matrix matrix))
+         (order (order-of-matrix padded))
+         (zeros (find-zeros padded))
+         (zero-count (getf zeros :count))
+         (total-zeros (getf zeros :total-zeros))
+         (row-count (car order))
+         (linear-length (* 2 row-count)))
+    (optimal-cover zero-count total-zeros linear-length row-count)))
